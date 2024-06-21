@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import useForm from "../../CustomHook/useForm.js";
-import validate from "../../Validators/validate.js";
+import validate from "../../Validators/validateEventRegistrationForm.js";
 import "./styles.css";
 
 const EventRegistrationForm = () => {
@@ -12,7 +12,7 @@ const EventRegistrationForm = () => {
     guestName: "",
   };
 
-  const { values, errors, handleChange, handleSubmit, isSubmitting } = useForm(
+  const { values, errors, handleChange, handleSubmit } = useForm(
     initialState,
     validate
   );
@@ -26,8 +26,8 @@ const EventRegistrationForm = () => {
 
   return (
     <div className="form-container">
-      <h2 className="heading">Event Registration Form</h2>
       <div className="form-card">
+        <h2>Event Registration Form</h2>
         <form onSubmit={handleFormSubmit} noValidate>
           <div className="form-group">
             <label htmlFor="name">Name:</label>
@@ -92,11 +92,24 @@ const EventRegistrationForm = () => {
 
       {submitted && Object.keys(errors).length === 0 && (
         <div className="form-summary">
-          <h3>Form Summary</h3>
-          <p>Name: {values.name}</p>
-          <p>Email: {values.email}</p>
-          <p>Age: {values.age}</p>
-          {values.attendingWithGuest && <p>Guest Name: {values.guestName}</p>}
+          <h3 className="summary-heading">Form Summary :</h3>
+          <p>
+            {" "}
+            <strong>Name:</strong> {values.name}
+          </p>
+          <p>
+            <strong>Email:</strong> {values.email}
+          </p>
+          <p>
+            <strong>Age: </strong>
+            {values.age}
+          </p>
+          {values.attendingWithGuest && (
+            <p>
+              <strong>Guest Name: </strong>
+              {values.guestName}
+            </p>
+          )}
         </div>
       )}
     </div>

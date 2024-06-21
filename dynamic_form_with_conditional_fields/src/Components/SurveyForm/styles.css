@@ -1,5 +1,6 @@
 /* styles.css */
 
+/* Global styles */
 body {
   font-family: "Times New Roman", Times, serif;
   background-color: #f0f0f0;
@@ -7,6 +8,7 @@ body {
   padding: 0;
 }
 
+/* Form container */
 .form-container {
   display: flex;
   justify-content: center;
@@ -50,7 +52,10 @@ label {
 input[type="text"],
 input[type="email"],
 input[type="number"],
-input[type="checkbox"] {
+input[type="tel"],
+input[type="datetime-local"],
+select,
+textarea {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;

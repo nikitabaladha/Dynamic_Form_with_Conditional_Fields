@@ -1,26 +1,13 @@
 import EventRegistrationForm from "./Components/EventRegistrationForm/EventRegistrationForm";
+import JobApplicationForm from "./Components/JobApplicationForm/JobApplicationForm";
 
 function App() {
   return (
     <div className="App">
-      <EventRegistrationForm />
+      {/* <EventRegistrationForm /> */}
+      <JobApplicationForm />
     </div>
   );
 }
 
 export default App;
-
-// import React from "react";
-// import ReactDOM from "react-dom";
-// import EventRegistrationForm from "./Components/EventRegistrationForm/EventRegistrationForm";
-// // Assuming you have some basic styles
-
-// const App = () => {
-//   return (
-//     <div className="App">
-//       <EventRegistrationForm />
-//     </div>
-//   );
-// };
-
-// ReactDOM.render(<App />, document.getElementById("root"));

@@ -25,6 +25,17 @@ const useForm = (initialState, validate) => {
     });
   };
 
+  const handleCheckboxChange = (event) => {
+    const { name, checked } = event.target;
+    setValues({
+      ...values,
+      additionalSkills: {
+        ...values.additionalSkills,
+        [name]: checked,
+      },
+    });
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const validationErrors = validate(values);
@@ -37,6 +48,8 @@ const useForm = (initialState, validate) => {
     errors,
     handleChange,
     handleSubmit,
+    handleCheckboxChange,
+    isSubmitting,
   };
 };
 
