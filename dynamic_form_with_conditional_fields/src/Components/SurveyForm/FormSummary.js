@@ -1,4 +1,3 @@
-// FormSummary.js
 import React from "react";
 
 const FormSummary = ({ values, additionalQuestions }) => {

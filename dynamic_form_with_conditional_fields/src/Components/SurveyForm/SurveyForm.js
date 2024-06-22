@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useForm from "../../CustomHook/survayFormCustomhook";
+
 import validate from "../../Validators/validateSurveyForm";
 import axios from "axios";
 import AdditionalQuestions from "./AdditionalQuestions";
@@ -63,6 +64,9 @@ const SurveyForm = () => {
       setSubmitted(true);
       console.log(errors, Object.keys(errors), isSubmitting);
       console.log("Form submitted successfully with values:", values);
+      alert(
+        "Form submitted successfully, scroll to bottom of page to see summary"
+      );
     } else {
       setSubmitted(false);
       console.log("Form submission failed with errors:", errors);
@@ -84,9 +88,7 @@ const SurveyForm = () => {
 
         <form onSubmit={handleFormSubmit}>
           <div className="form-group">
-            <label htmlFor="fullName">
-              Full Name:{submitted ? "Yes" : "No"}{" "}
-            </label>
+            <label htmlFor="fullName">Full Name:</label>
             <input
               type="text"
               id="fullName"
@@ -156,11 +158,6 @@ const SurveyForm = () => {
                   value={values.technologySection.yearsExperience}
                   onChange={handleChange}
                 />
-                {/* {errors.technologySection?.yearsExperience && (
-                  <p className="error">
-                    {errors.technologySection.yearsExperience}
-                  </p>
-                )} */}
 
                 {errors.yearsExperience && (
                   <p className="error">{errors.yearsExperience}</p>
@@ -185,6 +182,7 @@ const SurveyForm = () => {
                   <option value="Monthly">Monthly</option>
                   <option value="Rarely">Rarely</option>
                 </select>
+
                 {errors.exerciseFrequency && (
                   <p className="error">{errors.exerciseFrequency}</p>
                 )}
@@ -202,6 +200,7 @@ const SurveyForm = () => {
                   <option value="Vegan">Vegan</option>
                   <option value="Non-Vegetarian">Non-Vegetarian</option>
                 </select>
+
                 {errors.dietPreference && (
                   <p className="error">{errors.dietPreference}</p>
                 )}
@@ -227,6 +226,7 @@ const SurveyForm = () => {
                   <option value="Master's">Master's</option>
                   <option value="PhD">PhD</option>
                 </select>
+
                 {errors.educationSection?.highestQualification && (
                   <p className="error">
                     {errors.educationSection.highestQualification}
@@ -242,6 +242,7 @@ const SurveyForm = () => {
                   value={values.educationSection.fieldOfStudy}
                   onChange={handleChange}
                 />
+
                 {errors.educationSection?.fieldOfStudy && (
                   <p className="error">
                     {errors.educationSection.fieldOfStudy}
@@ -267,6 +268,7 @@ const SurveyForm = () => {
               value={values.feedback}
               onChange={handleChange}
             ></textarea>
+
             {errors.feedback && <p className="error">{errors.feedback}</p>}
           </div>
           <button type="submit" disabled={isSubmitting}>

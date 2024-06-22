@@ -5,6 +5,7 @@ import validate from "../../Validators/validateJobApplicationForm.js";
 
 const JobApplicationForm = () => {
   const navigate = useNavigate();
+
   const initialState = {
     fullName: "",
     email: "",
@@ -22,8 +23,14 @@ const JobApplicationForm = () => {
     preferredInterviewTime: "",
   };
 
-  const { values, errors, handleChange, handleCheckboxChange, handleSubmit } =
-    useForm(initialState, validate);
+  const {
+    isSubmitting,
+    values,
+    errors,
+    handleChange,
+    handleCheckboxChange,
+    handleSubmit,
+  } = useForm(initialState, validate);
 
   const [showRelevantExperience, setShowRelevantExperience] = useState(false);
   const [showPortfolioURL, setShowPortfolioURL] = useState(false);
@@ -32,9 +39,21 @@ const JobApplicationForm = () => {
 
   const [submitted, setSubmitted] = useState(false);
 
-  const handleFormSubmit = (event) => {
-    handleSubmit(event);
-    setSubmitted(true);
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+
+    const isFormValid = handleSubmit(event);
+    if (isFormValid) {
+      setSubmitted(true);
+      console.log(errors, Object.keys(errors), isSubmitting);
+      console.log("Form submitted successfully with values:", values);
+      alert(
+        "Form submitted successfully, scroll to bottom of page to see summary"
+      );
+    } else {
+      setSubmitted(false);
+      console.log("Form submission failed with errors:", errors);
+    }
   };
 
   const handleBackButtonClick = () => {

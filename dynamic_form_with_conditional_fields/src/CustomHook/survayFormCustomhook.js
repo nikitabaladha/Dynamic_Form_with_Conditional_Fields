@@ -48,12 +48,6 @@ const useForm = (initialState, validate) => {
     return Object.keys(validationErrors).length <= 0;
   };
 
-  const resetForm = () => {
-    setValues(initialState);
-    setErrors({});
-    setIsSubmitting(false);
-  };
-
   return {
     values,
     errors,
@@ -61,7 +55,6 @@ const useForm = (initialState, validate) => {
     handleSubmit,
     isSubmitting,
     setValues,
-    resetForm,
   };
 };
 

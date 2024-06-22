@@ -5,7 +5,6 @@ const AdditionalQuestions = ({
   additionalQuestions,
   values,
   handleChange,
-  submitted,
   errors,
 }) => {
   return (

@@ -1,5 +1,3 @@
-/* styles.css */
-
 /* Global styles */
 body {
   font-family: "Times New Roman", Times, serif;
@@ -83,7 +81,7 @@ button {
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top: 10px; /* Provide margin to separate from form */
+  margin-top: 10px;
 }
 
 button:hover {
@@ -97,7 +95,7 @@ button:hover {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  margin-top: 20px; /* Space between form and summary */
+  margin-top: 20px;
   box-sizing: border-box;
 }
 

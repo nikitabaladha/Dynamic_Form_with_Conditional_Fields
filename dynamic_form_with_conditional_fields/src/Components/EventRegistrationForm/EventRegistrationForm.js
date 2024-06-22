@@ -5,6 +5,7 @@ import validate from "../../Validators/validateEventRegistrationForm.js";
 
 const EventRegistrationForm = () => {
   const navigate = useNavigate();
+
   const initialState = {
     name: "",
     email: "",
@@ -13,17 +14,28 @@ const EventRegistrationForm = () => {
     guestName: "",
   };
 
-  const { values, errors, handleChange, handleSubmit } = useForm(
+  const { values, errors, handleChange, handleSubmit, isSubmitting } = useForm(
     initialState,
     validate
   );
 
   const [submitted, setSubmitted] = useState(false);
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
-    handleSubmit(event);
-    setSubmitted(true);
+
+    const isFormValid = handleSubmit(event);
+    if (isFormValid) {
+      setSubmitted(true);
+      console.log(errors, Object.keys(errors), isSubmitting);
+      console.log("Form submitted successfully with values:", values);
+      alert(
+        "Form submitted successfully, scroll to bottom of page to see summary"
+      );
+    } else {
+      setSubmitted(false);
+      console.log("Form submission failed with errors:", errors);
+    }
   };
 
   const handleBackButtonClick = () => {

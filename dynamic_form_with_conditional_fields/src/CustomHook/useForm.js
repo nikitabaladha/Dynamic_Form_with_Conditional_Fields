@@ -7,15 +7,17 @@ const useForm = (initialState, validate) => {
 
   useEffect(() => {
     if (isSubmitting) {
-      const noErrors = Object.keys(errors).length === 0;
-      if (noErrors) {
-        console.log("Form submitted successfully", values);
+      const validationErrors = validate(values);
+      setErrors(validationErrors);
+      console.log("Validation errors:", validationErrors);
+      if (Object.keys(validationErrors).length === 0) {
+        console.log("Submitting form with values:", values);
         setIsSubmitting(false);
       } else {
-        setIsSubmitting(false);
+        console.log("Form has errors, cannot submit.");
       }
     }
-  }, [errors, isSubmitting, values]);
+  }, [isSubmitting, validate, values]);
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -37,10 +39,10 @@ const useForm = (initialState, validate) => {
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault();
     const validationErrors = validate(values);
     setErrors(validationErrors);
     setIsSubmitting(true);
+    return Object.keys(validationErrors).length <= 0;
   };
 
   return {
