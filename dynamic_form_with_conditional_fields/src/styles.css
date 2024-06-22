@@ -34,6 +34,15 @@ body {
   margin-bottom: 15px;
 }
 
+.checkbox-group {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-container {
+  margin-left: 10px;
+}
+
 label {
   display: block;
   margin-bottom: 5px;
@@ -43,6 +52,9 @@ label {
 input[type="text"],
 input[type="email"],
 input[type="number"],
+input[type="tel"],
+input[type="datetime-local"],
+input[type="checkbox"],
 select,
 textarea {
   width: 100%;
@@ -80,7 +92,7 @@ button:hover {
 
 .form-summary {
   width: 100%;
-  max-width: 600px; /* Adjust width for consistency */
+  max-width: 400px;
   background-color: #f7f7f7;
   padding: 20px;
   border-radius: 8px;
@@ -90,6 +102,9 @@ button:hover {
 }
 
 .summary-heading,
-.Additional-heading {
+.form-heading,
+.Additional-heading,
+.survey-topic-heading {
   color: #45a049;
+  font-weight: bold;
 }

@@ -48,10 +48,9 @@ const validate = (values) => {
     }
   }
 
-  // if (!values.feedback || values.feedback.length < 50) {
-  //   errors.feedback =
-  //     "Feedback is required and must be at least 50 characters";
-  // }
+  if (!values.feedback) {
+    errors.feedback = "Feedback is required";
+  }
 
   return errors;
 };

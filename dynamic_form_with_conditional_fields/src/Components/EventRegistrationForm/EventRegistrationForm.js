@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import useForm from "../../CustomHook/useForm.js";
 import validate from "../../Validators/validateEventRegistrationForm.js";
-import "./styles.css";
 
 const EventRegistrationForm = () => {
   const initialState = {
@@ -28,7 +27,7 @@ const EventRegistrationForm = () => {
   return (
     <div className="form-container">
       <div className="form-card">
-        <h2>Event Registration Form</h2>
+        <h2 className="form-heading">Event Registration Form</h2>
         <form onSubmit={handleFormSubmit} noValidate>
           <div className="form-group">
             <label htmlFor="name">Name:</label>

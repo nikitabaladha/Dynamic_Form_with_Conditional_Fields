@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import useForm from "../../CustomHook/useForm.js";
 import validate from "../../Validators/validateJobApplicationForm.js";
-import "./styles.css";
 
 const JobApplicationForm = () => {
   const initialState = {
@@ -62,7 +61,7 @@ const JobApplicationForm = () => {
   return (
     <div className="form-container">
       <div className="form-card">
-        <h2>Job Application Form</h2>
+        <h2 className="form-heading">Job Application Form</h2>
         <form onSubmit={handleFormSubmit} noValidate>
           <div className="form-group">
             <label htmlFor="fullName">Full Name:</label>

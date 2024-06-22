@@ -17,14 +17,12 @@
 }
 
 .icon-text-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
+  display: flex; /* Use flexbox for side-by-side layout */
+  align-items: center; /* Center items vertically */
+  margin-top: 20px; /* Adjust margin as needed */
+  margin-left: 530px;
 }
 
 .icon {
-  margin-right: 20px;
-  font-size: 36px;
-  color: #45a049;
+  margin-right: 10px;
 }

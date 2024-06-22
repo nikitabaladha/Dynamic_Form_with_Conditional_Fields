@@ -18,7 +18,7 @@ const useForm = (initialState, validate) => {
         setIsSubmitting(false);
       }
     }
-  }, [isSubmitting, values, validate]);
+  }, [isSubmitting, values, validate, errors]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;

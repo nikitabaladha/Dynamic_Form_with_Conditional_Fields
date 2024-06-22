@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import useForm from "../../CustomHook/survayFormCustomhook";
 import validate from "../../Validators/validateSurveyForm";
 import axios from "axios";
-import "./styles.css";
 
 const SurveyForm = () => {
   const initialState = {
@@ -40,6 +39,7 @@ const SurveyForm = () => {
           const response = await axios.get(
             `http://localhost:5000/questions/${values.surveyTopic}`
           );
+          console.log("Fetched additional questions:", response.data);
           setAdditionalQuestions(response.data);
         }
       } catch (error) {
@@ -52,16 +52,22 @@ const SurveyForm = () => {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
+    console.log("Form values before submission:", values);
+    console.log("Form errors before submission:", errors);
     handleSubmit(event);
     if (Object.keys(errors).length === 0) {
       setSubmitted(true);
+
+      console.log("Form submitted successfully with values:", values);
     } else {
       setSubmitted(false);
+      console.log("Form submission failed with errors:", errors);
     }
   };
 
   const renderAdditionalQuestions = () => {
     return additionalQuestions.map((question) => {
+      const error = errors.additionalAnswers?.[question.key];
       switch (question.type) {
         case "text":
           return (
@@ -97,11 +103,6 @@ const SurveyForm = () => {
                   </option>
                 ))}
               </select>
-              {errors.additionalAnswers?.[question.key] && (
-                <p className="error">
-                  {errors.additionalAnswers[question.key]}
-                </p>
-              )}
             </div>
           );
         case "dropdown":
@@ -136,7 +137,7 @@ const SurveyForm = () => {
   return (
     <div className="form-container">
       <div className="form-card">
-        <h2>Survey Form</h2>
+        <h2 className="form-heading">Survey Form</h2>
 
         <form onSubmit={handleFormSubmit}>
           <div className="form-group">
@@ -316,6 +317,7 @@ const SurveyForm = () => {
               name="feedback"
               value={values.feedback}
               onChange={handleChange}
+              required
             ></textarea>
             {errors.feedback && <p className="error">{errors.feedback}</p>}
           </div>
@@ -325,6 +327,7 @@ const SurveyForm = () => {
           </button>
         </form>
       </div>
+
       {submitted && Object.keys(errors).length === 0 && (
         <div className="form-summary">
           <h3 className="summary-heading">Form Summary:</h3>
@@ -339,7 +342,7 @@ const SurveyForm = () => {
           </p>
           {values.surveyTopic === "Technology" && (
             <div>
-              <h4>Technology Section</h4>
+              <h4 className="survey-topic-heading">Technology Section</h4>
               <p>
                 <strong>Favorite Programming Language:</strong>{" "}
                 {values.technologySection.favoriteLanguage}
@@ -352,7 +355,7 @@ const SurveyForm = () => {
           )}
           {values.surveyTopic === "Health" && (
             <div>
-              <h4>Health Section</h4>
+              <h4 className="survey-topic-heading">Health Section</h4>
               <p>
                 <strong>Exercise Frequency:</strong>{" "}
                 {values.healthSection.exerciseFrequency}
@@ -365,7 +368,7 @@ const SurveyForm = () => {
           )}
           {values.surveyTopic === "Education" && (
             <div>
-              <h4>Education Section</h4>
+              <h4 className="survey-topic-heading">Education Section</h4>
               <p>
                 <strong>Highest Qualification:</strong>{" "}
                 {values.educationSection.highestQualification}
