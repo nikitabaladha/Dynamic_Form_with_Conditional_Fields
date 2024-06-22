@@ -1,48 +1,13 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import useForm from "../../CustomHook/useForm.js";
-import validate from "../../Validators/validateEventRegistrationForm.js";
+import React from "react";
 
-const EventRegistrationForm = () => {
-  const navigate = useNavigate();
-
-  const initialState = {
-    name: "",
-    email: "",
-    age: "",
-    attendingWithGuest: false,
-    guestName: "",
-  };
-
-  const { values, errors, handleChange, handleSubmit, isSubmitting } = useForm(
-    initialState,
-    validate
-  );
-
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
-
-    const isFormValid = handleSubmit(event);
-    if (isFormValid) {
-      setSubmitted(true);
-      console.log(errors, Object.keys(errors), isSubmitting);
-      console.log("Form submitted successfully with values:", values);
-      alert(
-        "Form submitted successfully, scroll to bottom of page to see summary"
-      );
-    } else {
-      setSubmitted(false);
-      console.log("Form submission failed with errors:", errors);
-    }
-  };
-
-  const handleBackButtonClick = () => {
-    console.log("Back button clicked");
-    navigate("/");
-  };
-
+const EventRegistrationForm = ({
+  values,
+  errors,
+  handleChange,
+  handleFormSubmit,
+  submitted,
+  handleBackButtonClick,
+}) => {
   return (
     <div className="form-container">
       <button className="back-button" onClick={handleBackButtonClick}>
@@ -116,20 +81,17 @@ const EventRegistrationForm = () => {
         <div className="form-summary">
           <h3 className="summary-heading">Form Summary :</h3>
           <p>
-            {" "}
             <strong>Name:</strong> {values.name}
           </p>
           <p>
             <strong>Email:</strong> {values.email}
           </p>
           <p>
-            <strong>Age: </strong>
-            {values.age}
+            <strong>Age:</strong> {values.age}
           </p>
           {values.attendingWithGuest && (
             <p>
-              <strong>Guest Name: </strong>
-              {values.guestName}
+              <strong>Guest Name:</strong> {values.guestName}
             </p>
           )}
         </div>

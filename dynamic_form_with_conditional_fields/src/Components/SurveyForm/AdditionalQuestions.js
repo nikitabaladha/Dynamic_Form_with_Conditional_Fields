@@ -1,4 +1,3 @@
-// AdditionalQuestions.js
 import React from "react";
 
 const AdditionalQuestions = ({
