@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import useForm from "../../CustomHook/useForm.js";
-import validate from "../../Validators/validateEventRegistrationForm.js";
+import validate from "../../Validators/validateJobApplicationForm.js";
 import "./styles.css";
 
 const JobApplicationForm = () => {
