@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useForm from "../../CustomHook/useForm.js";
 import validate from "../../Validators/validateEventRegistrationForm.js";
 
 const EventRegistrationForm = () => {
+  const navigate = useNavigate();
   const initialState = {
     name: "",
     email: "",
@@ -24,8 +26,16 @@ const EventRegistrationForm = () => {
     setSubmitted(true);
   };
 
+  const handleBackButtonClick = () => {
+    console.log("Back button clicked");
+    navigate("/");
+  };
+
   return (
     <div className="form-container">
+      <button className="back-button" onClick={handleBackButtonClick}>
+        Back
+      </button>
       <div className="form-card">
         <h2 className="form-heading">Event Registration Form</h2>
         <form onSubmit={handleFormSubmit} noValidate>

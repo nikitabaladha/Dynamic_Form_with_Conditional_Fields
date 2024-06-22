@@ -52,6 +52,14 @@ const validate = (values) => {
     errors.feedback = "Feedback is required";
   }
 
+  values.additionalQuestions?.forEach((question) => {
+    if (question.required && !values.additionalAnswers[question.key]) {
+      errors[question.key] = question.errorMsg;
+    }
+  });
+
+  console.log(errors);
+
   return errors;
 };
 

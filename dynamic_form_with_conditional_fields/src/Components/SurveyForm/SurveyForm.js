@@ -1,9 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useForm from "../../CustomHook/survayFormCustomhook";
 import validate from "../../Validators/validateSurveyForm";
 import axios from "axios";
+import AdditionalQuestions from "./AdditionalQuestions";
+import FormSummary from "./FormSummary";
 
 const SurveyForm = () => {
+  const navigate = useNavigate();
   const initialState = {
     fullName: "",
     email: "",
@@ -29,8 +33,8 @@ const SurveyForm = () => {
     validate
   );
 
-  const [additionalQuestions, setAdditionalQuestions] = React.useState([]);
-  const [submitted, setSubmitted] = React.useState(false);
+  const [additionalQuestions, setAdditionalQuestions] = useState([]);
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     const fetchAdditionalQuestions = async () => {
@@ -41,6 +45,7 @@ const SurveyForm = () => {
           );
           console.log("Fetched additional questions:", response.data);
           setAdditionalQuestions(response.data);
+          values.additionalQuestions = response.data;
         }
       } catch (error) {
         console.error("Error fetching additional questions:", error);
@@ -50,14 +55,13 @@ const SurveyForm = () => {
     fetchAdditionalQuestions();
   }, [values.surveyTopic]);
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
-    console.log("Form values before submission:", values);
-    console.log("Form errors before submission:", errors);
-    handleSubmit(event);
-    if (Object.keys(errors).length === 0) {
-      setSubmitted(true);
 
+    const isFormValid = handleSubmit(event);
+    if (isFormValid) {
+      setSubmitted(true);
+      console.log(errors, Object.keys(errors), isSubmitting);
       console.log("Form submitted successfully with values:", values);
     } else {
       setSubmitted(false);
@@ -65,83 +69,24 @@ const SurveyForm = () => {
     }
   };
 
-  const renderAdditionalQuestions = () => {
-    return additionalQuestions.map((question) => {
-      const error = errors.additionalAnswers?.[question.key];
-      switch (question.type) {
-        case "text":
-          return (
-            <div className="form-group" key={question.key}>
-              <label htmlFor={question.key}>{question.question}</label>
-              <input
-                type="text"
-                id={question.key}
-                name={`additionalAnswers.${question.key}`}
-                value={values.additionalAnswers[question.key] || ""}
-                onChange={handleChange}
-              />
-              {errors.additionalAnswers?.[question.key] && (
-                <p className="error">
-                  {errors.additionalAnswers[question.key]}
-                </p>
-              )}
-            </div>
-          );
-        case "select":
-          return (
-            <div className="form-group" key={question.key}>
-              <label htmlFor={question.key}>{question.question}</label>
-              <select
-                id={question.key}
-                name={`additionalAnswers.${question.key}`}
-                value={values.additionalAnswers[question.key] || ""}
-                onChange={handleChange}
-              >
-                {question.options.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-          );
-        case "dropdown":
-          return (
-            <div className="form-group" key={question.key}>
-              <label htmlFor={question.key}>{question.question}</label>
-              <select
-                id={question.key}
-                name={`additionalAnswers.${question.key}`}
-                value={values.additionalAnswers[question.key] || ""}
-                onChange={handleChange}
-              >
-                {question.options.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-              {errors.additionalAnswers?.[question.key] && (
-                <p className="error">
-                  {errors.additionalAnswers[question.key]}
-                </p>
-              )}
-            </div>
-          );
-        default:
-          return null;
-      }
-    });
+  const handleBackButtonClick = () => {
+    console.log("Back button clicked");
+    navigate("/");
   };
 
   return (
     <div className="form-container">
+      <button className="back-button" onClick={handleBackButtonClick}>
+        Back
+      </button>
       <div className="form-card">
         <h2 className="form-heading">Survey Form</h2>
 
         <form onSubmit={handleFormSubmit}>
           <div className="form-group">
-            <label htmlFor="fullName">Full Name:</label>
+            <label htmlFor="fullName">
+              Full Name:{submitted ? "Yes" : "No"}{" "}
+            </label>
             <input
               type="text"
               id="fullName"
@@ -151,7 +96,6 @@ const SurveyForm = () => {
             />
             {errors.fullName && <p className="error">{errors.fullName}</p>}
           </div>
-
           <div className="form-group">
             <label htmlFor="email">Email:</label>
             <input
@@ -163,7 +107,6 @@ const SurveyForm = () => {
             />
             {errors.email && <p className="error">{errors.email}</p>}
           </div>
-
           <div className="form-group">
             <label htmlFor="surveyTopic">Survey Topic:</label>
             <select
@@ -181,7 +124,6 @@ const SurveyForm = () => {
               <p className="error">{errors.surveyTopic}</p>
             )}
           </div>
-
           {values.surveyTopic === "Technology" && (
             <div className="technology-section">
               <div className="form-group">
@@ -200,10 +142,9 @@ const SurveyForm = () => {
                   <option value="Java">Java</option>
                   <option value="C#">C#</option>
                 </select>
-                {errors.technologySection?.favoriteLanguage && (
-                  <p className="error">
-                    {errors.technologySection.favoriteLanguage}
-                  </p>
+
+                {errors.favoriteLanguage && (
+                  <p className="error">{errors.favoriteLanguage}</p>
                 )}
               </div>
               <div className="form-group">
@@ -215,10 +156,14 @@ const SurveyForm = () => {
                   value={values.technologySection.yearsExperience}
                   onChange={handleChange}
                 />
-                {errors.technologySection?.yearsExperience && (
+                {/* {errors.technologySection?.yearsExperience && (
                   <p className="error">
                     {errors.technologySection.yearsExperience}
                   </p>
+                )} */}
+
+                {errors.yearsExperience && (
+                  <p className="error">{errors.yearsExperience}</p>
                 )}
               </div>
             </div>
@@ -240,10 +185,8 @@ const SurveyForm = () => {
                   <option value="Monthly">Monthly</option>
                   <option value="Rarely">Rarely</option>
                 </select>
-                {errors.healthSection?.exerciseFrequency && (
-                  <p className="error">
-                    {errors.healthSection.exerciseFrequency}
-                  </p>
+                {errors.exerciseFrequency && (
+                  <p className="error">{errors.exerciseFrequency}</p>
                 )}
               </div>
               <div className="form-group">
@@ -259,8 +202,8 @@ const SurveyForm = () => {
                   <option value="Vegan">Vegan</option>
                   <option value="Non-Vegetarian">Non-Vegetarian</option>
                 </select>
-                {errors.healthSection?.dietPreference && (
-                  <p className="error">{errors.healthSection.dietPreference}</p>
+                {errors.dietPreference && (
+                  <p className="error">{errors.dietPreference}</p>
                 )}
               </div>
             </div>
@@ -308,7 +251,13 @@ const SurveyForm = () => {
             </div>
           )}
 
-          {renderAdditionalQuestions()}
+          <AdditionalQuestions
+            additionalQuestions={additionalQuestions}
+            values={values}
+            handleChange={handleChange}
+            submitted={submitted}
+            errors={errors}
+          />
 
           <div className="form-group">
             <label htmlFor="feedback">Feedback:</label>
@@ -317,11 +266,9 @@ const SurveyForm = () => {
               name="feedback"
               value={values.feedback}
               onChange={handleChange}
-              required
             ></textarea>
             {errors.feedback && <p className="error">{errors.feedback}</p>}
           </div>
-
           <button type="submit" disabled={isSubmitting}>
             Submit
           </button>
@@ -329,70 +276,10 @@ const SurveyForm = () => {
       </div>
 
       {submitted && Object.keys(errors).length === 0 && (
-        <div className="form-summary">
-          <h3 className="summary-heading">Form Summary:</h3>
-          <p>
-            <strong>Name:</strong> {values.fullName}
-          </p>
-          <p>
-            <strong>Email:</strong> {values.email}
-          </p>
-          <p>
-            <strong>Survey Topic:</strong> {values.surveyTopic}
-          </p>
-          {values.surveyTopic === "Technology" && (
-            <div>
-              <h4 className="survey-topic-heading">Technology Section</h4>
-              <p>
-                <strong>Favorite Programming Language:</strong>{" "}
-                {values.technologySection.favoriteLanguage}
-              </p>
-              <p>
-                <strong>Years of Experience:</strong>{" "}
-                {values.technologySection.yearsExperience}
-              </p>
-            </div>
-          )}
-          {values.surveyTopic === "Health" && (
-            <div>
-              <h4 className="survey-topic-heading">Health Section</h4>
-              <p>
-                <strong>Exercise Frequency:</strong>{" "}
-                {values.healthSection.exerciseFrequency}
-              </p>
-              <p>
-                <strong>Diet Preference:</strong>{" "}
-                {values.healthSection.dietPreference}
-              </p>
-            </div>
-          )}
-          {values.surveyTopic === "Education" && (
-            <div>
-              <h4 className="survey-topic-heading">Education Section</h4>
-              <p>
-                <strong>Highest Qualification:</strong>{" "}
-                {values.educationSection.highestQualification}
-              </p>
-              <p>
-                <strong>Field of Study:</strong>{" "}
-                {values.educationSection.fieldOfStudy}
-              </p>
-            </div>
-          )}
-          {additionalQuestions.length > 0 && (
-            <div>
-              <h4 className="Additional-heading">Additional Answers</h4>
-              {Object.keys(values.additionalAnswers).map((key) => (
-                <p key={key}>
-                  <strong>{key}:</strong> {values.additionalAnswers[key]}
-                </p>
-              ))}
-            </div>
-          )}
-          <p>
-            <strong>Feedback:</strong> {values.feedback}
-          </p>
-        </div>
+        <FormSummary
+          values={values}
+          additionalQuestions={additionalQuestions}
+        />
       )}
     </div>
   );

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import useForm from "../../CustomHook/useForm.js";
 import validate from "../../Validators/validateJobApplicationForm.js";
 
 const JobApplicationForm = () => {
+  const navigate = useNavigate();
   const initialState = {
     fullName: "",
     email: "",
@@ -35,6 +37,11 @@ const JobApplicationForm = () => {
     setSubmitted(true);
   };
 
+  const handleBackButtonClick = () => {
+    console.log("Back button clicked");
+    navigate("/");
+  };
+
   useEffect(() => {
     if (
       values.applyingForPosition === "Developer" ||
@@ -60,6 +67,9 @@ const JobApplicationForm = () => {
 
   return (
     <div className="form-container">
+      <button className="back-button" onClick={handleBackButtonClick}>
+        Back
+      </button>
       <div className="form-card">
         <h2 className="form-heading">Job Application Form</h2>
         <form onSubmit={handleFormSubmit} noValidate>
