@@ -42,7 +42,7 @@ const SurveyForm = () => {
       try {
         if (values.surveyTopic) {
           const response = await axios.get(
-            `http://localhost:5000/questions/${values.surveyTopic}`
+            `http://50.19.46.55:5000/questions/${values.surveyTopic}`
           );
           console.log("Fetched additional questions:", response.data);
           setAdditionalQuestions(response.data);
